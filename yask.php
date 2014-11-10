@@ -120,18 +120,16 @@ class Yask
 		echo PHP_EOL;
 	}
 
-	/*
-	* Then get percentage
-	*/
+
 	private static function make_time($best, $time)
 	{
 		$per = self::get_percentage($best, $time);
 
-		return round($time * self::$MS) . "ms (slower:$per%)";
+		return round($time * self::$MS) . 'ms ('.number_format($per, 2).'% slower)';
 	}
 
 	/**
-	* get percentage of the given time !!
+	* get percentage of the given time.
 	* @param $best [float] best time
 	*/
 	private static function get_percentage($best, $time)
@@ -159,3 +157,19 @@ class Yask
 	}
 
 }
+
+
+Yask::track('[]', function(){
+	$arra = array();
+	$arra['one'] = 'one';
+	$arra['two'] = 'two';
+});
+
+Yask::track('array()', function(){
+	$arra = array(
+		'one' => 'one',
+		'two' => 'two',
+	);
+});
+
+Yask::report();
