@@ -1,6 +1,5 @@
 <?php
-/*
-*/
+
 class Yask
 {
 	/**
@@ -157,19 +156,3 @@ class Yask
 	}
 
 }
-
-
-Yask::track('[]', function(){
-	$arra = array();
-	$arra['one'] = 'one';
-	$arra['two'] = 'two';
-});
-
-Yask::track('array()', function(){
-	$arra = array(
-		'one' => 'one',
-		'two' => 'two',
-	);
-});
-
-Yask::report();
