@@ -2,20 +2,20 @@ How to use
 
 
     
-    Yask::track('method one', function(){
+    Y::track('method one', function(){
     	$arra = array();
     	$arra['one'] = 'one';
     	$arra['two'] = 'two';
     });
     
-    Yask::track('method two', function(){
+    Y::track('method two', function(){
     	$arra = array(
     		'one' => 'one',
     		'two' => 'two',
     	);
     });
     
-    Yask::report();
+    Y::report();
     
     
     // output
