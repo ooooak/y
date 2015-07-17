@@ -1,6 +1,6 @@
 <?php
 
-class Yask
+class Y
 {
     /**
     * Store all benchmark data
