@@ -15,14 +15,12 @@ class Y
     /**
     * @param $name [String] Benchmark Name. It will be display in report.
     * @param $fun  [Callable] Callback to benchmark.
-    * @param $loop [int, Bool] loop count, false don't loop
+    * @param $loop [int] loop count, false don't loop
     * @return Void
     */
     public static function track($name, callable $fun, $loop = 100000) 
     {
-        $loop = (is_int($loop) && $loop > 1) ? $loop : FALSE;
-
-        self::compile($name, $fun, $loop);
+        self::compile($name, $fun, intval($loop));
     }
 
     public static function report()
@@ -60,16 +58,17 @@ class Y
     }
 
     /**
-    * call user callback and record time.
+    * run callback and track time.
     */ 
     private function compile($name, callable $func, $loop)
     {
-        $time = ($loop === FALSE) 
-                ? self::count_time($func) 
-                : self::count_time_with_loop($func, $loop);
+        $time = ($loop > 1) 
+                ? self::count_time_loop($func, $loop) 
+                : self::count_time($func);
 
         
-        self::$stats[] = // save time to stats
+        // save time to stats
+        self::$stats[] = 
         [
             'name' => $name,
             'time' => $time,
@@ -89,7 +88,7 @@ class Y
         return $end - $start;
     }
 
-    private static function count_time_with_loop(callable $func, $loop)
+    private static function count_time_loop(callable $func, $loop)
     {   
         $total = 0;
 
