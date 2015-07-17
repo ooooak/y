@@ -23,6 +23,7 @@ class Y
         self::compile($name, $fun, intval($loop));
     }
 
+
     public static function report()
     {
         $stats = self::$stats;
@@ -36,7 +37,10 @@ class Y
 
         foreach ($stats as $stat) 
         {
-            self::put($stat['name'], ': ', self::make_time($stats[0]['time'], $stat['time']));
+            echo $stat['name'] 
+                 . ': ' 
+                 . self::make_time($stats[0]['time'], $stat['time'])) 
+                 . PHP_EOL;
         }
 
         self::$stats = []; // reset stats
@@ -62,10 +66,19 @@ class Y
     */ 
     private function compile($name, callable $func, $loop)
     {
-        $time = ($loop > 1) 
-                ? self::count_time_loop($func, $loop) 
-                : self::count_time($func);
+        if ($loop > 1) // loop and collect time
+        {
+            $total = 0;
+            for ($i=1; $i <= $loop; $i++)
+            { 
+                $total += self::count_time($func);
+            }
 
+        } 
+        else
+        {
+            $time = self::count_time($func);
+        }
         
         // save time to stats
         self::$stats[] = 
@@ -78,7 +91,7 @@ class Y
     private static function count_time(callable $func)
     {
         ob_start();
-        
+
         $start = microtime(TRUE);
         $func();
         $end = microtime(TRUE);
@@ -86,18 +99,6 @@ class Y
         ob_end_clean();
 
         return $end - $start;
-    }
-
-    private static function count_time_loop(callable $func, $loop)
-    {   
-        $total = 0;
-
-        for ($i=1; $i <= $loop; $i++)
-        { 
-            $total += self::count_time($func);
-        }
-
-        return $total;
     }
 
 
@@ -108,30 +109,22 @@ class Y
     /**
     *  Print function Args then new line.
     */
-    private static function put()
-    {
-        foreach (func_get_args() as $arg)
-        {
-            echo $arg;
-        }
-
-        echo PHP_EOL;
-    }
-
-
     private static function make_time($best, $time)
     {
         $per = self::get_percentage($best, $time);
 
-        return round($time * self::$MS) . 'ms ('.number_format($per, 2).'% slower)';
+        return round($time * self::$MS) . 'ms ('. $per .'% slower)';
     }
 
     /**
     * get percentage of the given time.
-    * @param $best [float] best time
+    * @param $best [int]
+    * @param $time [int]
     */
     private static function get_percentage($best, $time)
     {   
-        return ($best == $time) ? 0 : (($time-$best)/$best) * 100;
+        return ($best == $time) 
+               ? 0 
+               : number_format((($time-$best)/$best) * 100);
     }
 }
