@@ -135,24 +135,4 @@ class Y
     {   
         return ($best == $time) ? 0 : (($time-$best)/$best) * 100;
     }
-
-    /**
-    * Print error Massage with new line
-    */  
-    private static function log_error($msg, $func_name = FALSE)
-    {
-        if ($func_name === FALSE)
-        {
-            echo $msg;
-        }
-        else
-        {
-            echo $msg.' in '.__CLASS__.'::'.$func_name.'()'.' function.';
-        }
-
-        echo PHP_EOL;
-        
-        exit; // if there is error stop.
-    }
-
 }
