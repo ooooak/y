@@ -39,7 +39,7 @@ class Y
         {
             echo $stat['name'] 
                  . ': ' 
-                 . self::make_time($stats[0]['time'], $stat['time'])) 
+                 . self::make_time($stats[0]['time'], $stat['time'])
                  . PHP_EOL;
         }
 
@@ -68,10 +68,10 @@ class Y
     {
         if ($loop > 1) // loop and collect time
         {
-            $total = 0;
+            $time = 0;
             for ($i=1; $i <= $loop; $i++)
             { 
-                $total += self::count_time($func);
+                $time += self::count_time($func);
             }
 
         } 
