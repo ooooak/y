@@ -18,7 +18,7 @@ class Y
     * @param $loop [int] loop count, false don't loop
     * @return Void
     */
-    public static function track($name, callable $fun, $loop = 100000) 
+    public static function track($name, callable $fun, $loop = 1000) 
     {
         self::compile($name, $fun, intval($loop));
     }
@@ -111,20 +111,29 @@ class Y
     */
     private static function make_time($best, $time)
     {
-        $per = self::get_percentage($best, $time);
+        if ($best == $time){
+            return round($time * self::$MS) . 'ms (Winner)';
+        }else{
+            $per = self::measure_time($best, $time);
+            return round($time * self::$MS) . 'ms ('. $per .'x slower)';
+        }
 
-        return round($time * self::$MS) . 'ms ('. $per .'% slower)';
     }
 
-    /**
-    * get percentage of the given time.
-    * @param $best [int]
-    * @param $time [int]
-    */
-    private static function get_percentage($best, $time)
+
+    protected static function measure_time($a, $b)
     {   
-        return ($best == $time) 
-               ? 0 
-               : number_format((($time-$best)/$best) * 100);
+        if ($a == $b){
+            return 0; 
+        } 
+
+        $out = 0;
+        if ($b > $a){
+            $out = $b / $a;
+        }else{
+            $out = ($a / $b) * -1;
+        }
+
+        return number_format($out, 2);
     }
 }
